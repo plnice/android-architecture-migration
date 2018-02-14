@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Notes to self</string>
+    <string name="action_settings">Settings</string>
+    <string name="send">Send</string>
+    <string name="hint">What would you like to tell yourself?</string>
+    <string name="empty_state">You have no notes yet.\n\nHow about writing the first one? :-)</string>
+</resources>
