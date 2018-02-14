@@ -70,11 +70,16 @@ dependencies {
 
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2-alpha1'
 
+    implementation 'android.arch.persistence.room:runtime:1.0.0'
+    implementation 'android.arch.persistence.room:rxjava2:1.0.0'
+    kapt "android.arch.persistence.room:compiler:1.0.0"
+
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.7"
     testImplementation "org.robolectric:shadows-supportv4:3.7"
     testImplementation "org.mockito:mockito-core:2.15.0"
     testImplementation "com.google.truth:truth:0.39"
+    testImplementation "android.arch.core:core-testing:1.1.0"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2-alpha1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2-alpha1'

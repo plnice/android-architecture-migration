@@ -9,6 +9,7 @@ import androidx.database.getString
 import com.github.plnice.archmigration.database.ArchMigrationContentProvider
 import com.github.plnice.archmigration.database.ArchMigrationContract.Messages
 import com.github.plnice.archmigration.model.Message
+import com.github.plnice.archmigration.roomdatabase.ArchMigrationRoomDatabase
 import com.github.plnice.archmigration.utils.RxLoaderManager
 import com.github.plnice.archmigration.utils.toSequence
 import io.reactivex.Flowable
@@ -65,5 +66,21 @@ class ContentProviderMessagesRepository
     private fun Message.toContentValues() = ContentValues().apply {
         put(Messages.COLUMN_CREATED_AT, dateFormat.format(createdAt))
         put(Messages.COLUMN_MESSAGE, message)
+    }
+}
+
+class RoomMessagesRepository
+@Inject constructor(private val database: ArchMigrationRoomDatabase) : MessagesRepository {
+
+    override fun getMessages(): Flowable<List<Message>> {
+        return database.messageDao().getAll()
+    }
+
+    override fun storeMessage(message: Message) {
+        database.messageDao().insert(message)
+    }
+
+    override fun deleteMessage(id: Long) {
+        database.messageDao().delete(Message(id))
     }
 }
