@@ -17,3 +17,10 @@ class DefaultSchedulersProvider
     override val computation: Scheduler = Schedulers.computation()
     override val io: Scheduler = Schedulers.io()
 }
+
+class InstantSchedulersProvider
+@Inject constructor() : SchedulersProvider {
+    override val main: Scheduler = InstantScheduler
+    override val computation: Scheduler = InstantScheduler
+    override val io: Scheduler = InstantScheduler
+}
