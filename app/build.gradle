@@ -22,6 +22,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "com.github.plnice.archmigration.EspressoTestRunner"
     }
     buildTypes {
         release {
@@ -37,6 +38,7 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+        execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 }
 
@@ -66,9 +68,17 @@ dependencies {
     implementation 'com.airbnb.android:epoxy:2.9.1'
     kapt 'com.airbnb.android:epoxy-processor:2.9.1'
 
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2-alpha1'
+
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.7"
     testImplementation "org.robolectric:shadows-supportv4:3.7"
     testImplementation "org.mockito:mockito-core:2.15.0"
     testImplementation "com.google.truth:truth:0.39"
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.2-alpha1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2-alpha1'
+    androidTestImplementation 'com.squareup.rx.idler:rx2-idler:0.9.0'
+
+    androidTestUtil 'com.android.support.test:orchestrator:1.0.2-alpha1'
 }

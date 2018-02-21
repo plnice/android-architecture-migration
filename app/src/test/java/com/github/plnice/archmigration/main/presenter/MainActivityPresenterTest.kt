@@ -3,6 +3,7 @@ package com.github.plnice.archmigration.main.presenter
 import com.github.plnice.archmigration.main.MainActivityMvp.Model.ModelState
 import com.github.plnice.archmigration.main.MainActivityMvp.View.MessageViewData
 import com.github.plnice.archmigration.main.MainActivityMvp.View.ViewState
+import com.github.plnice.archmigration.main.utils.Idler
 import com.github.plnice.archmigration.model.Message
 import com.github.plnice.archmigration.utils.CurrentDateProvider
 import com.github.plnice.archmigration.utils.InstantSchedulersProvider
@@ -12,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 
@@ -34,7 +36,7 @@ class MainActivityPresenterTest {
 
         model = TestModel()
         view = TestView()
-        presenter = MainActivityPresenter(model, view, messageViewDataConverter, InstantSchedulersProvider())
+        presenter = MainActivityPresenter(model, view, messageViewDataConverter, InstantSchedulersProvider(), mock(Idler::class.java))
     }
 
     @Test

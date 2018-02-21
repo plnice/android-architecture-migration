@@ -1,6 +1,7 @@
 package com.github.plnice.archmigration.main
 
 import android.os.Bundle
+import com.github.plnice.archmigration.main.utils.Idler
 import com.github.plnice.archmigration.model.Message
 import io.reactivex.Flowable
 
@@ -20,6 +21,7 @@ interface MainActivityMvp {
     interface Presenter {
         fun onStart()
         fun onStop()
+        fun getIdler(): Idler
     }
 
     interface View {

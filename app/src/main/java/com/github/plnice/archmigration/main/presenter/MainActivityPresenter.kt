@@ -3,6 +3,7 @@ package com.github.plnice.archmigration.main.presenter
 import com.github.plnice.archmigration.main.MainActivityMvp
 import com.github.plnice.archmigration.main.MainActivityMvp.Model.ModelState
 import com.github.plnice.archmigration.main.MainActivityMvp.View.ViewState
+import com.github.plnice.archmigration.main.utils.Idler
 import com.github.plnice.archmigration.utils.SchedulersProvider
 import com.github.plnice.archmigration.utils.plusAssign
 import io.reactivex.disposables.CompositeDisposable
@@ -12,7 +13,8 @@ class MainActivityPresenter
 @Inject constructor(private val model: MainActivityMvp.Model,
                     private val view: MainActivityMvp.View,
                     private val messageViewDataConverter: MessageViewDataConverter,
-                    private val schedulersProvider: SchedulersProvider) : MainActivityMvp.Presenter {
+                    private val schedulersProvider: SchedulersProvider,
+                    private val idler: Idler) : MainActivityMvp.Presenter {
 
     private val composite = CompositeDisposable()
 
@@ -25,10 +27,12 @@ class MainActivityPresenter
                 .observeOn(schedulersProvider.main)
                 .subscribe {
                     view.setViewState(it)
+                    idler.idleNow()
                 }
 
         composite += view
                 .getSendButtonClicks()
+                .doOnNext { idler.increment() }
                 .filter { it.isNotBlank() }
                 .map { with(messageViewDataConverter) { it.toMessage() } }
                 .observeOn(schedulersProvider.io)
@@ -39,6 +43,7 @@ class MainActivityPresenter
 
         composite += view
                 .onMessageSwipedOut()
+                .doOnNext { idler.increment() }
                 .observeOn(schedulersProvider.io)
                 .subscribe {
                     model.deleteMessage(it)
@@ -54,6 +59,10 @@ class MainActivityPresenter
 
     override fun onStop() {
         composite.clear()
+    }
+
+    override fun getIdler(): Idler {
+        return idler
     }
 
 }

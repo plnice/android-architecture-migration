@@ -4,6 +4,8 @@ import android.support.v4.app.FragmentActivity
 import com.github.plnice.archmigration.ActivityScope
 import com.github.plnice.archmigration.main.model.MainActivityModel
 import com.github.plnice.archmigration.main.presenter.MainActivityPresenter
+import com.github.plnice.archmigration.main.utils.Idler
+import com.github.plnice.archmigration.main.utils.MainActivityIdler
 import com.github.plnice.archmigration.main.view.MainActivityView
 import dagger.Binds
 import dagger.Module
@@ -25,5 +27,9 @@ abstract class MainActivityModule {
     @Binds
     @ActivityScope
     abstract fun providePresenter(presenter: MainActivityPresenter): MainActivityMvp.Presenter
+
+    @Binds
+    @ActivityScope
+    abstract fun provideIdler(idler: MainActivityIdler): Idler
 
 }
