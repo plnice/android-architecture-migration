@@ -22,11 +22,6 @@
             </intent-filter>
         </activity>
         
-        <provider
-            android:authorities="com.github.plnice.archmigration.provider"
-            android:name=".database.ArchMigrationContentProvider"
-            android:exported="false" />
-        
     </application>
 
 </manifest>
