@@ -1,5 +1,7 @@
 package com.github.plnice.archmigration.main
 
+import android.arch.persistence.room.Room
+import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
@@ -12,14 +14,14 @@ import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import com.github.plnice.archmigration.ArchMigrationApplication
 import com.github.plnice.archmigration.R
-import com.github.plnice.archmigration.database.ArchMigrationContentProvider
 import com.github.plnice.archmigration.main.model.MainActivityModel
 import com.github.plnice.archmigration.main.presenter.DateTimeFormatter
 import com.github.plnice.archmigration.main.presenter.MainActivityPresenter
 import com.github.plnice.archmigration.main.presenter.MessageViewDataConverter
 import com.github.plnice.archmigration.main.utils.MainActivityIdler
 import com.github.plnice.archmigration.main.view.MainActivityView
-import com.github.plnice.archmigration.repositories.ContentProviderMessagesRepository
+import com.github.plnice.archmigration.repositories.RoomMessagesRepository
+import com.github.plnice.archmigration.roomdatabase.ArchMigrationRoomDatabase
 import com.github.plnice.archmigration.utils.*
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.anyOf
@@ -33,6 +35,8 @@ import java.util.*
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
+    private lateinit var database: ArchMigrationRoomDatabase
+
     @Rule
     @JvmField
     val activityRule = object : ActivityTestRule<MainActivity>(MainActivity::class.java) {
@@ -40,25 +44,23 @@ class MainActivityTest {
         override fun beforeActivityLaunched() {
             super.beforeActivityLaunched()
             val application = InstrumentationRegistry.getTargetContext().applicationContext as ArchMigrationApplication
+            prepareInMemoryDatabase(application)
             application.overriddenActivityInjector = createFakeActivityInjector<MainActivity> { makeInjects() }
         }
     }
 
+    private fun prepareInMemoryDatabase(context: Context) {
+        database = Room.inMemoryDatabaseBuilder(context, ArchMigrationRoomDatabase::class.java).build()
+    }
+
     private fun MainActivity.makeInjects() {
-        val rxLoaderManager = RxLoaderManager(this, supportLoaderManager)
-        val model = MainActivityModel(ContentProviderMessagesRepository(rxLoaderManager, contentResolver))
+        val model = MainActivityModel(RoomMessagesRepository(database))
         val messageViewDataConverter = MessageViewDataConverter(DateTimeFormatter(this), CalendarCurrentDateProvider())
         view = MainActivityView(this, InstantSchedulersProvider())
         presenter = MainActivityPresenter(model, view, messageViewDataConverter, DefaultSchedulersProvider(), MainActivityIdler())
     }
 
     private val idlingRegistry: IdlingRegistry = IdlingRegistry.getInstance()
-
-    @Before
-    fun clearContentProvider() {
-        activityRule.activity.contentResolver.delete(
-                ArchMigrationContentProvider.CONTENT_URI, null, null)
-    }
 
     @Before
     fun registerIdlingResource() {
