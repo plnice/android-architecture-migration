@@ -17,17 +17,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
-        view.onCreate()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
+        with(lifecycle) {
+            addObserver(view)
+            addObserver(presenter)
+        }
     }
 
     fun getIdler(): Idler {

@@ -1,6 +1,6 @@
 package com.github.plnice.archmigration.main
 
-import android.os.Bundle
+import android.arch.lifecycle.LifecycleObserver
 import com.github.plnice.archmigration.main.utils.Idler
 import com.github.plnice.archmigration.model.Message
 import io.reactivex.Flowable
@@ -18,14 +18,11 @@ interface MainActivityMvp {
         }
     }
 
-    interface Presenter {
-        fun onStart()
-        fun onStop()
+    interface Presenter : LifecycleObserver {
         fun getIdler(): Idler
     }
 
-    interface View {
-        fun onCreate()
+    interface View : LifecycleObserver {
         fun setViewState(viewState: ViewState)
 
         fun getSendButtonClicks(): Flowable<String>

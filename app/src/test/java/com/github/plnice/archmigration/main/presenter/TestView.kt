@@ -13,9 +13,6 @@ class TestView : MainActivityMvp.View {
     val messageSwipedOut: PublishSubject<Long> = PublishSubject.create()
     val clearedEditText: PublishSubject<Unit> = PublishSubject.create()
 
-    override fun onCreate() {
-    }
-
     override fun setViewState(viewState: ViewState) {
         viewStates.onNext(viewState)
     }

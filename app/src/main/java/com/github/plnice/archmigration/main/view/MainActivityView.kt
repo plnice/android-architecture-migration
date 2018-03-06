@@ -1,5 +1,7 @@
 package com.github.plnice.archmigration.main.view
 
+import android.arch.lifecycle.Lifecycle.Event.ON_CREATE
+import android.arch.lifecycle.OnLifecycleEvent
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.airbnb.epoxy.EpoxyTouchHelper
@@ -27,7 +29,8 @@ class MainActivityView
 
     private val messageSwipedOutSubject = PublishSubject.create<Long>()
 
-    override fun onCreate() {
+    @OnLifecycleEvent(ON_CREATE)
+    fun onCreate() {
         with(activity) {
             setContentView(R.layout.activity_main)
             setSupportActionBar(toolbar)

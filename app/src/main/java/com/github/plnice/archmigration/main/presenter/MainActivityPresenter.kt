@@ -1,5 +1,8 @@
 package com.github.plnice.archmigration.main.presenter
 
+import android.arch.lifecycle.Lifecycle.Event.ON_START
+import android.arch.lifecycle.Lifecycle.Event.ON_STOP
+import android.arch.lifecycle.OnLifecycleEvent
 import com.github.plnice.archmigration.main.MainActivityMvp
 import com.github.plnice.archmigration.main.MainActivityMvp.Model.ModelState
 import com.github.plnice.archmigration.main.MainActivityMvp.View.ViewState
@@ -18,7 +21,8 @@ class MainActivityPresenter
 
     private val composite = CompositeDisposable()
 
-    override fun onStart() {
+    @OnLifecycleEvent(ON_START)
+    fun onStart() {
 
         composite += model
                 .getState()
@@ -57,7 +61,8 @@ class MainActivityPresenter
         }
     }
 
-    override fun onStop() {
+    @OnLifecycleEvent(ON_STOP)
+    fun onStop() {
         composite.clear()
     }
 
