@@ -76,6 +76,8 @@ dependencies {
 
     implementation "android.arch.lifecycle:extensions:1.1.0"
 
+    implementation "android.arch.lifecycle:viewmodel:1.1.0"
+
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.7"
     testImplementation "org.robolectric:shadows-supportv4:3.7"
